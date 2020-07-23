@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Accessible Modal Example</title>
+  <link rel="stylesheet" href="modal.css">
+  <link rel="stylesheet" href="base_styles.css">
+  <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+</head>
+<body>
+  <div class="main-content" role="main">
+    <h1>Accessible Modal Dialogs from Scratch</h1>
+
+    <p>This document demonstrates a working modal dialog developed with no external dependencies. It includes the minimal amount of HTML, JavaScript and CSS to power the modal, and nothing else.</p>
+
+    <p>You can spawn the modal by clicking the following link, which <b>simulates</b> a prompt to close the current document (regardless of how you respond to the modal, the document will not closed).</p>
+
+    <p><a href="#" class="show">Close Window (spawn modal)</a></p>
+
+    <h2>Features Include...</h2>
+
+    <ul>
+    <li>Upon opening the modal, focus should move to the "cancel" button - the safest button for a user to accidentially click.</li>
+    <li>Upon closing the modal, focus should return to the "Close Window" link above.</li>
+    <li>While the modal is open, focus is trapped and cannot return to the main document. The main content is also hidden with <code>aria-hidden="true"</code>, while the document itself has <code>aria-hidden="false"</code> and <code>aria-modal="true"</code> applied to it.</li>
+    <li>The modal is decorated with <code>role="alertdialog"</code> which triggers a system-level alert</li>
+    <li>The modal is described by a hidden element containing a more detailed explanation than the text that appears for sighted users. When the modal appears, the screenreader should announce:
+      <blockquote>"You are in a modal window prompting you to abandon your unsaved changes. You may click "ok" to abandon your chagnes or "cancel" to return tot he parent document."</blockquote>
+    </li>
+    <li>The modal can be dismissed with the Escape key, or by clicking the backdrop</li>
+    </ul>
+  </div>
+
+  <div class="modal-container">
+    <div class="modal-overlay">
+    </div>
+    <div class="modal-content" aria-role="alertdialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description">
+      <div id="modal-description">You are in a modal window prompting you to abandon your unsaved changes. You may click "ok" to abandon your changes, or "cancel" to return to the parent document.</div>
+      <h1 id="modal-title">Abandon Changes</h1>
+      <p id="modal-body">You have unsaved changes, are you sure you want to abandon them?</p>
+      <div class="modal-buttons">
+        <button tabindex="3" class="button ok-button">OK</button>
+        <button tabindex="4" class="button cancel-button">Cancel</button>
+      </div>
+    </div>
+  </div>
+  <script src="modal.js"></script>
+</body>
+</html>

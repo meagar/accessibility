@@ -1,0 +1,54 @@
+
+/* Top-level container for the modal hierarchy */
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+}
+
+/* The modal is displayed by adding the ".in" class, an idiom borrowed from Twitter Bootstrap */
+.modal-container.in { visibility: visible; }
+
+/* This element contains text mean for screen readers and does not need to be visible */
+#modal-description {
+  display: none;
+}
+
+/* The backdrop */
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, .8);
+}
+
+/* The dialog window itself */
+.modal-content {
+  position: relative;
+  padding: 20px;
+  width: 40vw;
+  height: 30vh;
+  max-height: 300px;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 10px;
+}
+
+/* Buttons stuck to the footer of the modal */
+.modal-buttons {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
