@@ -1,0 +1,11 @@
+
+= Accessibility Demos
+
+
+This repo collects some simple demos of accessiblly built components.
+
+It uses Github Pages to render the live demo.
+
+== Demos
+
+- https://meagar.github.io/accessibility/modal/js[Accessible Modals]
