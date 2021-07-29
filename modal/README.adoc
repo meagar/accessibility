@@ -76,9 +76,9 @@ Markup for modal dialogs typically involves two main components:
 
 * A modal container that holds the modal itself
 
-Sample markup might appear as follows:
+Lets build a basic document that has two regions: One for the pages primary content, within `<div class="main-content">` and another to contain the modal and its backdrop, within `<div class="modal-overlay">`.`
 
-.Basic HTML for a document containing a modal dialog
+.Basic scaffold for a document containing a modal dialog
 [source, html]
 ----
 <body>
@@ -93,36 +93,77 @@ Sample markup might appear as follows:
 </body>
 ----
 
-Takeaway 1: The main content and modal content should be siblings; the modal content should not appear as a descendant of the main content element
+TIP: Making the main and modal content *siblings* will be important. This allows us to easily hide the main content by applying a single `aria-hidden` attribute
 
-2020-07-24: This document is incomplete. The remainder of implementation details will be added shortly
-Showing the Modal
+Next, we'll give the modal itself some content. We'll iteratively improve this markup as we layer on functionality:
 
-When shown, there are several changes that need to happen within the DOM:
-Modal Visibility
+.Some simple content within our modal dialog
+[source,html]
+----
+<div class="modal-content">
+  <h1>This is a modal dialog</h1>
+  <p>You must resolve this dialog before you can continue interacting with the main document.</p>
+  <button>Ok</button>
+</div>
+----
 
-    The modal content tree should have its visibility set to visible. This can be accomplished by manipulating the elements style attribute directly in JavaScript, or by toggling a class on the modal element. Bootstrap often uses in for this purpose
+Finally, we need a minimal bit of CSS to hide the modal until we want to display it:
 
-/* Default - hidden */
-.modal-overlay {
-  visibility: hidden;
+[source,css]
+----
+.modal-content {
+    visibility: hidden;
 }
+----
 
-/* Styles applied when modal is visibile */
-.modal-overlay.in {
-visibility: visible;
-}
+NOTE: This document skips over a lot of the CSS required to present the modal and its backdrop. For a complete working example, including the minimal amount of CSS, see https://github.com/meagar/accessibility/blob/master/modal/js/[Accessible Modal Dialog Example].
 
-The modal element itself must have role=”dialog” attribute applied to it:
+=== Showing the Modal
 
-    document.querySelector('.modal-content')
+To show the dialog, there are a series of changes we need to make to the main and modal DOM hierarchies.
 
-Main content visibility
+A naive approach might simply be to replace `visibility: hidden` with `visibility: visible` on the modal tree.
+This would accomplish the *bare minimum* requirement of displaying the modal for sighted users, but from an accessibility standpoint, this solution yields a complete broken modal.
 
-    The main content tree should have the aria-hidden=”true” attribute applied to it. This prevents keyboard focus from moving back to this portion of the document, and it prevents screen readers from reading any of its content. Visually, the modal overlay will obscure this content for sighted users so their attention is drawn to the modal; aria-hidden effectively accomplishes the same for visually impaired users.
+Over the next few sections we'll define a function, `showModal`, that performs all the DOM manipulation required to display our modal dialog in a way that is fully accessible.
 
+=== Modal Visibility
+
+First, the modal content tree should have its `visibility` set to `visible`.
+This can be accomplished by manipulating the elements style attribute directly in JavaScript, or by toggling a class on the modal element.
+https://getbootstrap.com/docs/4.5/components/modal/[Bootstrap] often uses the `in` class for toggling the display mode of its various dynamic components such as modals and collapsible content areas.
+In this solution, we'd have a `.in { visibility: visible }` style in a `<style>` tag or external style sheet, and we'd add the `in` class to the modal DOM hierarchy to display it.
+For this document, we'll instead manipulate the elements `style` attribute directly, so that the function we define `showModal` can be completely self-contained and not rely on any external CSS.
+
+.Changing the modals visibility
+[source,javascript]
+----
+document.querySelector('.modal-overlay').
+----
+
+The modal element itself must have `role=”dialog”` attribute applied to it:
+
+[source,javascript]
+----
+document.querySelector('.modal-content')
+----
+
+=== Main content visibility
+
+The main content tree must have the `aria-hidden=”true”` attribute applied to it.
+This obscures the main content _semantically_ in the same way that the modal overlay obscures it _visually_.
+The browser will prevent keyboard navigation from moving back to the main content area, and assistive technology will ignore the main content.
+
+[source,javascript]
+----
 document.querySelector('.main-content').setAttribute('aria-hidden', 'true');
-Moving Keyboard Focus
+----
+
+=== Moving Keyboard Focus
+
+With the modal visible and the main content hidden, we must move keyboard focus the a sensible element within the modal dialog.
+This is typically the first element in the modal that can receive focus.
+
 Trapping Keyboard Focus
 Closing the Modal
 Restoring Keyboard Focus

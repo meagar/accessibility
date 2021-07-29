@@ -1,4 +1,8 @@
 
+*:focus, *:active {
+  color: #f00;
+}
+
 /* Top-level container for the modal hierarchy */
 .modal-container {
   position: fixed;
@@ -11,9 +15,6 @@
   align-items: center;
   visibility: hidden;
 }
-
-/* The modal is displayed by adding the ".in" class, an idiom borrowed from Twitter Bootstrap */
-.modal-container.in { visibility: visible; }
 
 /* This element contains text mean for screen readers and does not need to be visible */
 #modal-description {

@@ -16,10 +16,9 @@ function show(event) {
 
   // Hide the main content from assistive technology
   // Mirrors how the main content is visual hidden by the modal backdrop
-  mainContent.setAttribute('aria-hidden', 'true');
 
-  // The `in` class changes `visibility` from `hidden` to `visible`
-  modalContainer.classList.add('in');
+  // The from `hidden` to `visible`
+  modalContainer.style.visibility = 'visible';
 
   // Expose the modal content to screen readers
   modalContent.setAttribute('aria-hidden', 'false');
@@ -34,7 +33,7 @@ function show(event) {
 
 function hide(event) {
   event?.preventDefault();
-  modalContainer.classList.remove('in');
+  modalContainer.style.visibility = 'hidden';
   mainContent.setAttribute('aria-hidden', 'false');
   modalContent.setAttribute('aria-hidden', 'true');
   modalContent.removeAttribute('role');
@@ -55,7 +54,7 @@ document.addEventListener('keyup', event => {
 // Focus trap - when the modal is visible, prevent focus from going back to the main content area
 mainContent.addEventListener('focusin', event => {
   console.log("focus");
-  if (modalContainer.classList.contains('in')) {
+  if (modalContainer.style.visibility === 'visible') {
     modalContent.querySelector('.ok-button').focus();
   }
 });
